@@ -7,7 +7,7 @@
  * Otherwise, ignores everything that is not a digit and converts
  * it to an unsigned int. (Or short in this case?)
  */
-int read_uint_from_file(const char* path) {
+int read_uint_from_file(const char *path) {
     FILE *file;
     file = fopen(path, "r");
     if (file == NULL) {
@@ -27,17 +27,45 @@ int read_uint_from_file(const char* path) {
     return result;
 }
 
-int main() {
-    const char *current_brightness_path 
-        = "/sys/class/backlight/intel_backlight/brightness";
-    const char *max_brightness_path 
-        = "/sys/class/backlight/intel_backlight/max_brightness";
+#define CURRENT_BRIGHTNESS_PATH "/sys/class/backlight/intel_backlight/brightness"
+#define MAX_BRIGHTNESS_PATH "/sys/class/backlight/intel_backlight/max_brightness"
+#define STEPS 20
 
-    const int current_brightness = read_uint_from_file(current_brightness_path);
-    const int max_brightness = read_uint_from_file(max_brightness_path);
+int main(const int argc, const char *argv[]) {
+    const int current_brightness = read_uint_from_file(CURRENT_BRIGHTNESS_PATH);
+    if (current_brightness < 0) {
+        return 1;
+    }
+    const int max_brightness = read_uint_from_file(MAX_BRIGHTNESS_PATH);
+    if (max_brightness < 0) {
+        return 1;
+    }
 
-    printf("current brightness : %d\n", current_brightness);
-    printf("max brightness     : %d\n", max_brightness);
+    if (argc < 2) {
+        printf("%d", current_brightness);
+        return 0;
+    }
 
+    int step = max_brightness / STEPS;
+    int output_value = current_brightness;
+    for (size_t i = 1; i < argc; i++) {
+        size_t j = 0;
+        while(argv[i][j] != '\0') {
+            if (argv[i][j] == '+') {
+                output_value += step;
+            } 
+            if (argv[i][j] == '-') {
+                output_value -= step;
+            }
+            j++;
+        }
+    }
+    if (output_value > max_brightness) {
+        output_value = max_brightness;
+    }
+    if (output_value < 0) {
+        output_value = 0;
+    }
+    printf("%d", output_value);
     return 0;
 }
