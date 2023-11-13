@@ -1,0 +1,27 @@
+.TH IBLIAD 7
+.SH NAME
+Intel BackLIght ADjuster \- changes brightness of your notebook.
+.SH SYNOPSIS
+.B ibliad
+[\fB+\fR]
+[\fB\-\fR]
+.SH DESCRIPTION
+.B ibliad
+adjusts screen brightness on notebooks with intel backlights.
+Not designed for other devices.
+/sys/class/backlight/intel_backlight/brightness needs to be writable for your user.
+.SH OPTIONS
+.TP
+.BR +
+Increases brightness by 1 out of 20 steps.
+.TP
+.BR \-
+Decreases brightness by 1 out of 20 steps.
+.TP
+.BR ++
+Increases brightness by 2 out of 20 steps.
+.TP
+.BR \-\-\-
+Decreases brightness by 3 out of 20 steps.
+As one can see, the amount of increases or decreases just depends on the
+amount of + or \- that are passed.
