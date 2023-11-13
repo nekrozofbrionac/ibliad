@@ -36,7 +36,7 @@ bindsym XF86MonBrightnessUp exec "ibliad +"
 Maybe you want to do so too.
 
 I don't know how the config of any other window manager or so works.
-You get the jist though.
+You get the gist though.
 
 ## Requirements
 
@@ -72,4 +72,7 @@ sudo make install
 sudo make uninstall
 ```
 
-
+## Building for yourself
+```
+make
+```
