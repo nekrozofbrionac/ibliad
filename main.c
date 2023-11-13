@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+#define CURRENT_BRIGHTNESS_PATH "/sys/class/backlight/intel_backlight/brightness"
+#define MAX_BRIGHTNESS_PATH "/sys/class/backlight/intel_backlight/max_brightness"
+#define STEPS 20
+
 /**
  * Returns -1 if opening of the file given in path failed.
  * Otherwise, ignores everything that is not a digit and converts
@@ -27,6 +31,10 @@ int read_uint_from_file(const char *path) {
     return result;
 }
 
+/**
+ * Writes an integer into a file using fprintf.
+ * Returns -1 if opening the file failed.
+ */
 int write_int_into_file(const char *path, int value) {
     FILE *file;
     file = fopen(path, "w");
@@ -38,13 +46,10 @@ int write_int_into_file(const char *path, int value) {
     return 0;
 }
 
-#define CURRENT_BRIGHTNESS_PATH "/sys/class/backlight/intel_backlight/brightness"
-#define MAX_BRIGHTNESS_PATH "/sys/class/backlight/intel_backlight/max_brightness"
-#define STEPS 20
-
 /**
- * Reads the brightness values from intel_backlight/ and returns a new value
- * based on how many '+' or '-' characters given to it, and relative to max_brightness
+ * Reads the brightness values from intel_backlight/ and calculates a new value
+ * based on how many '+' or '-' characters given to it, and relative to max_brightness.
+ * Then writes that new value into the current brightness file.
  *
  * Designed for Intel Backlight only.
  */
