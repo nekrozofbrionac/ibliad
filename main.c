@@ -58,10 +58,12 @@ int main(const int argc, const char *argv[]) {
 
     const int current_brightness = read_uint_from_file(CURRENT_BRIGHTNESS_PATH);
     if (current_brightness < 0) {
+        perror("Current brightness unreadable");
         return 1;
     }
     const int max_brightness = read_uint_from_file(MAX_BRIGHTNESS_PATH);
     if (max_brightness < 0) {
+        perror("Max brightness unreadable");
         return 1;
     }
 
@@ -89,6 +91,7 @@ int main(const int argc, const char *argv[]) {
 
     const int result = write_int_into_file(CURRENT_BRIGHTNESS_PATH, output_value);
     if (result < 0) {
+        perror("Cannot write into brightness");
         return 1;
     }
     return 0;
